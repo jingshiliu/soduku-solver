@@ -1,4 +1,8 @@
-type CellColor = 'text-slate-500' | 'text-red-400' | 'text-blue-400'
+enum CellColor {
+    SLATE = 'text-slate-500',
+    RED = 'text-red-400',
+    BLUE = 'text-blue-400',
+}
 
 type Board<T> = [
     [T, T, T, T, T, T, T, T, T],

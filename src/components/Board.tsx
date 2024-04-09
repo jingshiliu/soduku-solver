@@ -1,7 +1,7 @@
 interface BoardProps {
     board: Board<number>
     cellSize: number
-    boardCellColors: Board<string>
+    boardCellColors: Board<CellColor>
 
     updateBoard(row: number, col: number): void
 }

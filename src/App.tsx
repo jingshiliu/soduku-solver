@@ -1,21 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Board from './components/Board.tsx'
 import NumberOptions from './components/NumberOptions.tsx'
 import UtilButtons from './components/UtilButtons.tsx'
 
+import SudokuSolver, { defaultBoard } from './sudoku.ts'
+
 function App(): JSX.Element {
     const [gameStatus, setGameStatus] = useState<GameStatus>('waiting')
-    const [board, setBoard] = useState<Board<number>>(
-        Array.from({ length: 9 }, () => Array(9).fill(0)) as Board<number>,
-    )
+    const [board, setBoard] = useState<Board<number>>(defaultBoard)
     const [boardCellColors, setBoardCellColors] = useState<Board<CellColor>>(
         Array.from({ length: 9 }, () =>
-            Array(9).fill('text-red-400'),
+            Array(9).fill(CellColor.RED),
         ) as Board<CellColor>,
     )
     const [selectedButtonOption, setSelectedButtonOption] =
         useState<ButtonOptions>(0 as ButtonOptions)
-    const [cellColor, setCellColor] = useState<CellColor>('text-slate-500')
+    const [cellColor, setCellColor] = useState<CellColor>(CellColor.SLATE)
+    const sudokuSolver = useMemo(() => new SudokuSolver(board), [])
+
+    useEffect(() => {
+        const newBoardColor = [...boardCellColors]
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (board[i][j] !== 0) {
+                    newBoardColor[i][j] = CellColor.SLATE
+                }
+            }
+        }
+    }, [])
 
     function updateBoard(row: number, col: number): void {
         const newBoard: Board<number> = [...board]
@@ -29,63 +41,36 @@ function App(): JSX.Element {
     }
 
     function startGame(): void {
-        if (!isBoardValid(board)) {
+        if (!SudokuSolver.isBoardValid(board)) {
             alert('Invalid board')
             return
         }
         setGameStatus('in-progress')
-        setCellColor('text-blue-400')
+        setCellColor(CellColor.BLUE)
     }
 
     function resetGame(): void {
         setGameStatus('waiting')
-        setCellColor('text-slate-500')
+        setCellColor(CellColor.SLATE)
         setBoard(
             Array.from({ length: 9 }, () => Array(9).fill(0)) as Board<number>,
         )
         setBoardCellColors(
             Array.from({ length: 9 }, () =>
-                Array(9).fill('text-red-400'),
+                Array(9).fill(CellColor.RED),
             ) as Board<CellColor>,
         )
     }
 
     function solveGame(): void {
-        if (!isBoardValid(board)) {
+        if (!SudokuSolver.isBoardValid(board)) {
             alert('Invalid board')
             return
         }
-        const solution = solveSudoku(board)
+        sudokuSolver.update(board)
+        const solution: Board<number> = sudokuSolver.solve()
         setBoard(solution)
         setGameStatus('won')
-    }
-
-    function isBoardValid(gameBoard: Board<number>): boolean {
-        const rows: Set<number>[] = Array.from({ length: 9 }, () => new Set())
-        const cols: Set<number>[] = Array.from({ length: 9 }, () => new Set())
-        const grids: Set<number>[] = Array.from({ length: 9 }, () => new Set())
-        for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
-                const cell = gameBoard[r][c]
-                if (cell === 0) continue
-                const grid = Math.floor(r / 3) * 3 + Math.floor(c / 3)
-                if (
-                    rows[r].has(cell) ||
-                    cols[c].has(cell) ||
-                    grids[grid].has(cell)
-                ) {
-                    return false
-                }
-                rows[r].add(cell)
-                cols[c].add(cell)
-                grids[grid].add(cell)
-            }
-        }
-        return true
-    }
-
-    function solveSudoku(gameBoard: Board<number>): Board<number> {
-        return gameBoard
     }
 
     return (
