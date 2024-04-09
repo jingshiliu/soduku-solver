@@ -42,7 +42,7 @@ function UtilButtons({
                     Reset
                 </button>
             )}
-            {gameStatus === GameStatus.IN_PROGRESS && (
+            {gameStatus !== GameStatus.WON && (
                 <button
                     className={`h-20 w-20 rounded-md border border-slate-300 p-2 text-center text-slate-500`}
                     onClick={solveGame}
