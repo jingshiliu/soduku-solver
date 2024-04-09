@@ -20,7 +20,7 @@ function App(): JSX.Element {
     const sudokuSolver = useMemo(() => new SudokuSolver(board), [])
 
     useEffect(() => {
-        const newBoardColor = [...boardCellColors]
+        const newBoardColor: Board<CellColor> = [...boardCellColors]
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 if (board[i][j] !== 0) {
@@ -28,6 +28,7 @@ function App(): JSX.Element {
                 }
             }
         }
+        setBoardCellColors(newBoardColor)
     }, [])
 
     function updateBoard(row: number, col: number): void {
