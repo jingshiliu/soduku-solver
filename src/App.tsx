@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import Board from './components/Board.tsx'
 import NumberOptions from './components/NumberOptions.tsx'
 import UtilButtons from './components/UtilButtons.tsx'
+import { CellColor, GameStatus } from './enums.ts'
 
 import SudokuSolver, { defaultBoard } from './sudoku.ts'
 
 function App(): JSX.Element {
-    const [gameStatus, setGameStatus] = useState<GameStatus>('waiting')
+    const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.WAITING)
     const [board, setBoard] = useState<Board<number>>(defaultBoard)
     const [boardCellColors, setBoardCellColors] = useState<Board<CellColor>>(
         Array.from({ length: 9 }, () =>
@@ -45,12 +46,12 @@ function App(): JSX.Element {
             alert('Invalid board')
             return
         }
-        setGameStatus('in-progress')
+        setGameStatus(GameStatus.IN_PROGRESS)
         setCellColor(CellColor.BLUE)
     }
 
     function resetGame(): void {
-        setGameStatus('waiting')
+        setGameStatus(GameStatus.WAITING)
         setCellColor(CellColor.SLATE)
         setBoard(
             Array.from({ length: 9 }, () => Array(9).fill(0)) as Board<number>,
@@ -70,7 +71,7 @@ function App(): JSX.Element {
         sudokuSolver.update(board)
         const solution: Board<number> = sudokuSolver.solve()
         setBoard(solution)
-        setGameStatus('won')
+        setGameStatus(GameStatus.WON)
     }
 
     return (

@@ -1,3 +1,5 @@
+import { GameStatus } from '../enums.ts'
+
 interface UtilButtonsProps {
     gameStatus: GameStatus
     selectedButtonOption: ButtonOptions
@@ -25,7 +27,7 @@ function UtilButtons({
             >
                 Eraser
             </button>
-            {gameStatus === 'waiting' ? (
+            {gameStatus === GameStatus.WAITING ? (
                 <button
                     className={`h-20 w-20 rounded-md border border-slate-300 p-2 text-center text-slate-500`}
                     onClick={startGame}
@@ -40,7 +42,7 @@ function UtilButtons({
                     Reset
                 </button>
             )}
-            {gameStatus === 'in-progress' && (
+            {gameStatus === GameStatus.IN_PROGRESS && (
                 <button
                     className={`h-20 w-20 rounded-md border border-slate-300 p-2 text-center text-slate-500`}
                     onClick={solveGame}

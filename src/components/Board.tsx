@@ -1,3 +1,5 @@
+import { CellColor } from '../enums.ts'
+
 interface BoardProps {
     board: Board<number>
     cellSize: number
