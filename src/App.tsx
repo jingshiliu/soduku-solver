@@ -5,6 +5,7 @@ import UtilButtons from './components/UtilButtons.tsx'
 import { CellColor, GameStatus } from './enums.ts'
 
 import SudokuSolver, { defaultBoard } from './sudoku.ts'
+import { Separator } from '@/components/ui/separator.tsx'
 
 function App(): JSX.Element {
     const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.WAITING)
@@ -86,6 +87,8 @@ function App(): JSX.Element {
                 cellSize={10}
                 boardCellColors={boardCellColors}
             />
+
+            <Separator orientation={'horizontal'} className={'mt-4'} />
 
             <NumberOptions
                 updateButtonOption={setSelectedButtonOption}

@@ -12,7 +12,6 @@ function Board({
     board,
     boardCellColors,
     updateBoard,
-    cellSize = 20,
 }: BoardProps): JSX.Element {
     return (
         <section>
@@ -23,7 +22,7 @@ function Board({
                             <button
                                 key={`${i}-${j}-${boardCellColors[i][j]}`}
                                 onClick={() => updateBoard(i, j)}
-                                className={`h-10 w-${cellSize} rounded-md border border-slate-300 p-2 text-center ${boardCellColors[i][j]} `}
+                                className={`h-10 w-10 rounded-md border border-slate-300 p-2 text-center max-sm:w-8 ${boardCellColors[i][j]} `}
                             >
                                 {cell === 0 ? '' : cell}
                             </button>

@@ -8,7 +8,7 @@ function NumberOptions({
     selectedButtonOption,
 }: NumberOptionsProps) {
     return (
-        <section className={'m-4'}>
+        <section className={'m-4 flex w-full justify-center'}>
             {Array.from({ length: 9 }, (_, i) => {
                 const bgColor =
                     selectedButtonOption === i + 1 ? 'bg-slate-200' : ''
